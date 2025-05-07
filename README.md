@@ -1,1 +1,1 @@
-# bigquery-dbt-pipeline
+# StackFusion: Modern Data Pipeline for SaaS Analytics
