@@ -1,0 +1,50 @@
+version: '3.9'
+
+services:
+
+  # Airbyte Web UI
+  airbyte-webapp:
+    image: airbyte/webapp:0.50.4
+    ports:
+      - "8000:80"
+    depends_on:
+      - airbyte-server
+
+  # Airbyte Server
+  airbyte-server:
+    image: airbyte/server:0.50.4
+    ports:
+      - "8001:8001"
+    environment:
+      - AIRBYTE_ROLE=server
+
+  # Dagster Web UI (Dagit)
+  dagster:
+    image: dagster/dagster-cloud:latest
+    ports:
+      - "3000:3000"
+    volumes:
+      - ./dags:/opt/dagster/app
+
+  # dbt CLI container (if not using dbt Cloud)
+  dbt:
+    image: ghcr.io/dbt-labs/dbt-core:1.7.8
+    volumes:
+      - ./dbt:/usr/app
+    working_dir: /usr/app
+    entrypoint: [ "tail", "-f", "/dev/null" ]  # 保持容器运行状态，可进入 bash
+
+  # PostgreSQL 数据库
+  postgres:
+    image: postgres:15
+    environment:
+      POSTGRES_USER: airbyte
+      POSTGRES_PASSWORD: password
+      POSTGRES_DB: warehouse
+    ports:
+      - "5432:5432"
+    volumes:
+      - pg_data:/var/lib/postgresql/data
+
+volumes:
+  pg_data:
