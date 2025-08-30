@@ -1,0 +1,43 @@
+name: Data Pipeline CI
+
+on:
+  push:
+    branches: [ main ]
+  pull_request:
+
+jobs:
+  test-pipeline:
+    runs-on: ubuntu-latest
+
+    services:
+      postgres:
+        image: postgres:14
+        ports: ["5432:5432"]
+        env:
+          POSTGRES_USER: admin
+          POSTGRES_PASSWORD: password
+          POSTGRES_DB: mydb
+        options: >-
+          --health-cmd "pg_isready -U admin -d mydb"
+          --health-interval 10s
+          --health-timeout 5s
+          --health-retries 5
+
+    steps:
+      - name: Checkout repo
+        uses: actions/checkout@v3
+
+      - name: Set up Python
+        uses: actions/setup-python@v4
+        with:
+          python-version: "3.9"
+
+      - name: Install dbt
+        run: pip install dbt-postgres
+
+      - name: Run dbt tests
+        working-directory: ./dbt
+        run: |
+          dbt deps
+          dbt run
+          dbt test
