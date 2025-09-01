@@ -1,0 +1,9 @@
+dbt-bigquery
+dagster
+dagster-cloud
+dagster-dbt
+dagster-airbyte
+
+[dev]
+dagit
+pytest

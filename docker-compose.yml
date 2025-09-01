@@ -1,40 +1,30 @@
-version: '3.9'
-
 services:
+  airbyte-server:
+    image: airbyte/server:1.6.7
+    ports:
+      - "8001:8001"
 
-  # Airbyte Web UI
   airbyte-webapp:
-    image: airbyte/webapp:0.50.4
+    image: airbyte/airbyte-webapp:0.30.8-alpha-cloud-stage
     ports:
       - "8000:80"
     depends_on:
       - airbyte-server
 
-  # Airbyte Server
-  airbyte-server:
-    image: airbyte/server:0.50.4
-    ports:
-      - "8001:8001"
+  airbyte-worker:
+    image: airbyte/worker:1.6.7
+    depends_on:
+      - airbyte-server
+
+  airbyte-db:
+    image: airbyte/db:build-aef874ec7d-23124-master
     environment:
-      - AIRBYTE_ROLE=server
-
-  # Dagster Web UI (Dagit)
-  dagster:
-    image: dagster/dagster-cloud:latest
-    ports:
-      - "3000:3000"
+      POSTGRES_USER: airbyte
+      POSTGRES_PASSWORD: password
+      POSTGRES_DB: airbyte
     volumes:
-      - ./dags:/opt/dagster/app
+      - airbyte_db_data:/var/lib/postgresql/data
 
-  # dbt CLI container (if not using dbt Cloud)
-  dbt:
-    image: ghcr.io/dbt-labs/dbt-core:1.7.8
-    volumes:
-      - ./dbt:/usr/app
-    working_dir: /usr/app
-    entrypoint: [ "tail", "-f", "/dev/null" ]  # Keep container working state.
-
-  # PostgreSQL 数据库
   postgres:
     image: postgres:15
     environment:
@@ -42,9 +32,24 @@ services:
       POSTGRES_PASSWORD: password
       POSTGRES_DB: warehouse
     ports:
-      - "5432:5432"
+      - "5433:5432"
     volumes:
-      - pg_data:/var/lib/postgresql/data
+      - warehouse_data:/var/lib/postgresql/data
+
+  dagster:
+    image: dagster/dagster:latest
+    ports:
+      - "3000:3000"
+    volumes:
+      - ./dags:/opt/dagster/app
+
+  dbt:
+    image: ghcr.io/dbt-labs/dbt-core:latest
+    volumes:
+      - ./dbt:/usr/app
+    working_dir: /usr/app
+    entrypoint: ["tail", "-f", "/dev/null"]
 
 volumes:
-  pg_data:
+  airbyte_db_data:
+  warehouse_data:
