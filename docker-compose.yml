@@ -32,7 +32,7 @@ services:
     volumes:
       - ./dbt:/usr/app
     working_dir: /usr/app
-    entrypoint: [ "tail", "-f", "/dev/null" ]  # 保持容器运行状态，可进入 bash
+    entrypoint: [ "tail", "-f", "/dev/null" ]  # Keep container working state.
 
   # PostgreSQL 数据库
   postgres:
