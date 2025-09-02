@@ -1,55 +1,19 @@
+version: "3.9"
+
 services:
-  airbyte-server:
-    image: airbyte/server:1.6.7
-    ports:
-      - "8001:8001"
-
-  airbyte-webapp:
-    image: airbyte/airbyte-webapp:0.30.8-alpha-cloud-stage
-    ports:
-      - "8000:80"
-    depends_on:
-      - airbyte-server
-
-  airbyte-worker:
-    image: airbyte/worker:1.6.7
-    depends_on:
-      - airbyte-server
-
-  airbyte-db:
-    image: airbyte/db:build-aef874ec7d-23124-master
-    environment:
-      POSTGRES_USER: airbyte
-      POSTGRES_PASSWORD: password
-      POSTGRES_DB: airbyte
-    volumes:
-      - airbyte_db_data:/var/lib/postgresql/data
-
   postgres:
     image: postgres:15
+    container_name: big_star_postgres
+    restart: always
     environment:
-      POSTGRES_USER: airbyte
-      POSTGRES_PASSWORD: password
-      POSTGRES_DB: warehouse
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: mysecretpassword
+      POSTGRES_DB: big_star_db
     ports:
-      - "5433:5432"
+      - "5432:5432"
     volumes:
-      - warehouse_data:/var/lib/postgresql/data
-
-  dagster:
-    image: dagster/dagster:latest
-    ports:
-      - "3000:3000"
-    volumes:
-      - ./dags:/opt/dagster/app
-
-  dbt:
-    image: ghcr.io/dbt-labs/dbt-core:latest
-    volumes:
-      - ./dbt:/usr/app
-    working_dir: /usr/app
-    entrypoint: ["tail", "-f", "/dev/null"]
+      - db_data:/var/lib/postgresql/data   # Volume
+      - ./init_db.sql:/docker-entrypoint-initdb.d/data/init_db.sql   # Initial PostgresSQL
 
 volumes:
-  airbyte_db_data:
-  warehouse_data:
+  db_data:

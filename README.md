@@ -28,7 +28,7 @@ Ensure you have Python 3 installed. If not, you can download and install it from
 5. Install Dependencies:
     - `pip install -e ".[dev]"`
 
-## 数据同步
+## Deploying Airbyte for data synchronization
 Change Data Capture (CDC)
 
 /docker-entrypoint-initdb.d # psql -U postgres -d big-star-db
