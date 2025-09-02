@@ -13,7 +13,7 @@ jobs:
         uses: actions/checkout@v3
 
       - name: Setup SSH
-        uses: webfactory/ssh-agent@main
+        uses: webfactory/ssh-agent@v0.9.1
         with:
           ssh-private-key: ${{ secrets.EC2_SSH_KEY }}
 
