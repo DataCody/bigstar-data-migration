@@ -1,7 +1,0 @@
-README.md
-setup.py
-bigstar_data_migration.egg-info/PKG-INFO
-bigstar_data_migration.egg-info/SOURCES.txt
-bigstar_data_migration.egg-info/dependency_links.txt
-bigstar_data_migration.egg-info/requires.txt
-bigstar_data_migration.egg-info/top_level.txt
