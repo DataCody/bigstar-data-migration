@@ -9,12 +9,11 @@ services:
       POSTGRES_USER: postgres
       POSTGRES_PASSWORD: mysecretpassword
       POSTGRES_DB: big_star_db
-      POSTGRES_INITDB_WAL_LEVEL: logical
     ports:
       - "5432:5432"
     volumes:
       - db_data:/var/lib/postgresql/data   # Volume
       - ./init_db.sql:/docker-entrypoint-initdb.d/init_db.sql   # Initial PostgresSQL
-
+    command: postgres -c wal_level=logical -c max_replication_slots=10 -c max_wal_senders=10
 volumes:
   db_data:
