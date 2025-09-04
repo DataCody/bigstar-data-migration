@@ -17,6 +17,19 @@ jobs:
         with:
           ssh-private-key: ${{ secrets.EC2_SSH_KEY }}
 
+      - name: Generate .env file
+        run: |
+          echo "POSTGRES_USER=${{ secrets.POSTGRES_USER }}" >> .env
+          echo "POSTGRES_PASSWORD=${{ secrets.POSTGRES_PASSWORD }}" >> .env
+          echo "POSTGRES_DB=${{ secrets.POSTGRES_DB }}" >> .env
+          echo "AIRFLOW__CORE__EXECUTOR=LocalExecutor" >> .env
+          echo "AIRFLOW__DATABASE__SQL_ALCHEMY_CONN=postgresql+psycopg2://${{ secrets.POSTGRES_USER }}:${{ secrets.POSTGRES_PASSWORD }}@postgres:5432/${{ secrets.POSTGRES_DB }}" >> .env
+          echo "AIRFLOW__CORE__FERNET_KEY=${{ secrets.AIRFLOW__CORE__FERNET_KEY }}" >> .env
+          echo "AIRFLOW__WEBSERVER__SECRET_KEY=random_secret_key" >> .env
+          echo "AIRFLOW_ADMIN_USERNAME=${{ secrets.AIRFLOW_ADMIN_USERNAME }}" >> .env
+          echo "AIRFLOW_ADMIN_PASSWORD=${{ secrets.AIRFLOW_ADMIN_PASSWORD }}" >> .env
+          echo "AIRFLOW_ADMIN_EMAIL=${{ secrets.AIRFLOW_ADMIN_EMAIL }}" >> .env
+      
       - name: Sync project to EC2
         run: |
           rsync -avz -e "ssh -o StrictHostKeyChecking=no" \
@@ -26,6 +39,6 @@ jobs:
         run: |
           ssh -o StrictHostKeyChecking=no ec2-user@3.107.181.27 << 'EOF'
           cd ~/bigstar-data-migration/
-          docker-compose pull
-          docker-compose up -d
+          ENV_FILE=.env docker-compose pull
+          ENV_FILE=.env docker-compose up -d
           EOF
