@@ -1,2 +1,12 @@
 .DS_Store
 venv/
+<<<<<<< HEAD
+# Default .gitignore content added by dbt Cloud# you shouldn't commit these into source control
+# these are the default directory names, adjust/add to fit your needs
+target/
+dbt_packages/
+logs/
+# end dbt Cloud content
+=======
+.env.local
+>>>>>>> b0ccd8dfdd375a152806948f8094f51c5e3a4d79
