@@ -1,0 +1,11 @@
+version: 2
+
+sources:
+  - name: raw_data
+    database: big_star
+    schema: public
+    tables:
+      - name: customers
+      - name: orders
+      - name: products
+      - name: order_items
