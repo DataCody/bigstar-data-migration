@@ -1,0 +1,16 @@
+version: 2
+
+sources:
+  - name: raw_data
+    database: big_star
+    schema: public
+    freshness: 
+      warn_after:
+        count: 1
+        period: day
+    loaded_at_field: "_airbyte_extracted_at"    
+    tables:
+      - name: customers
+      - name: orders
+      - name: products
+      - name: order_items
