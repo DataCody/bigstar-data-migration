@@ -1,7 +1,7 @@
 version: 2
 
 models:
-  - name: int_orders_enriched
+  - name: inter_order_items_enriched
     description: "Intermediate model that enriches order data by combining order and order_items. Includes derived metrics like total order amount."
     columns:
       - name: total_amount
@@ -9,4 +9,5 @@ models:
         tests:
           - not_null
           - accepted_range:
-              min_value: 0
+              arguments:
+                min_value: 0
