@@ -5,13 +5,10 @@ sources:
     database: big_star
     schema: public
     freshness: 
-      error_after:
-        count: 2
-        period: day
       warn_after:
         count: 1
         period: day
-    loaded_at_field: "_airbyte_normalized_at"    
+    loaded_at_field: "_airbyte_extracted_at"    
     tables:
       - name: customers
       - name: orders
