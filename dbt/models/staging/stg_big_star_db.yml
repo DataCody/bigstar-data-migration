@@ -42,3 +42,59 @@ models:
           - relationships:
               field: customer_id
               to: ref('stg_customers')
+
+  - name: stg_order_items
+    description: "Staging table for order item data, representing the products included in each order."
+    columns:
+      - name: order_item_id
+        description: "Unique identifier for each item in an order."
+        tests:
+          - unique
+          - not_null
+      - name: order_id
+        description: "Reference to the related order."
+        tests:
+          - not_null
+          - relationships:
+              to: ref('stg_orders')
+              field: order_id
+      - name: product_id
+        description: "Reference to the purchased product."
+        tests:
+          - not_null
+          - relationships:
+              to: ref('stg_products')
+              field: product_id
+      - name: product_price
+        description: "Price of the product at the time of purchase."
+        tests:
+          - not_null
+
+  - name: stg_products
+    description: "Staging table for product data, containing product details and attributes."
+    columns:
+      - name: product_id
+        description: "Unique identifier for each product."
+        tests:
+          - unique
+          - not_null
+      - name: product_name
+        description: "The name of the product."
+        tests:
+          - not_null
+      - name: category
+        description: "Product category (e.g., electronics, apparel)."
+      - name: collection
+        description: "Grouping or collection that the product belongs to."
+      - name: price
+        description: "Standard retail price of the product."
+        tests:
+          - not_null
+      - name: rating
+        description: "Average customer rating of the product."
+        tests:
+          - not_null
+      - name: availability
+        description: "Availability status of the product (e.g., in stock, out of stock)."
+        tests:
+          - not_null
