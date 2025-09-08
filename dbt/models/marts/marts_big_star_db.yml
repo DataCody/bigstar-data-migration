@@ -20,3 +20,13 @@ models:
         tests:
           - not_null
           - unique
+      - name: email
+        tests:
+          - not_null
+      - name: city
+        tests:
+          - not_null
+      - name: country
+        tests:
+          - not_null
+  
