@@ -2,22 +2,29 @@ version: 2
 
 models:
   - name: stg_customers
+    description: "Staging table for customer data, including basic customer info like ID and email."
     columns:
       - name: customer_id
+        description: "Unique identifier for each customer."
         tests:
           - unique
           - not_null
       - name: email
+        description: "Email address of the customer."
         tests:
           - not_null
           - unique
+
   - name: stg_orders
+    description: "Staging table for order data, including order ID, status, and associated customer."
     columns:
       - name: order_id
+        description: "Unique identifier for each order."
         tests:
           - unique
           - not_null
       - name: status
+        description: "Current status of the order."
         tests:
           - accepted_values:
               values:
@@ -30,6 +37,7 @@ models:
                 - processing
                 - unavailable
       - name: customer_id
+        description: "Reference to the customer who made the order."
         tests:
           - relationships:
               field: customer_id

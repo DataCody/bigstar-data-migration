@@ -17,3 +17,5 @@ from f
 left join c on f.customer_id = c.customer_id
 group by
     c.customer_id,
+    c.gender,
+    c.country

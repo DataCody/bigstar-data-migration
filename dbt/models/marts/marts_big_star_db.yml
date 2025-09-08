@@ -2,12 +2,15 @@ version: 2
 
 models:
   - name: fact_orders
+    description: "Fact table containing order-level details, including the customer associated with each order."
     columns:
       - name: order_id
+        description: "Unique identifier for each order."
         tests:
           - not_null
           - unique
       - name: customer_id
+        description: "Reference to the customer who placed the order, linking to dim_customers."
         tests:
           - not_null
           - relationships:
@@ -15,18 +18,22 @@ models:
               field: customer_id
 
   - name: dim_customers
+    description: "Dimension table containing customer details such as email and location."
     columns:
       - name: customer_id
+        description: "Unique identifier for each customer."
         tests:
           - not_null
           - unique
       - name: email
+        description: "Email address of the customer."
         tests:
           - not_null
       - name: city
+        description: "City where the customer is located."
         tests:
           - not_null
       - name: country
+        description: "Country where the customer is located."
         tests:
           - not_null
-  
