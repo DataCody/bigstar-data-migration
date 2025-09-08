@@ -1,0 +1,12 @@
+version: 2
+
+models:
+  - name: int_orders_enriched
+    description: "Intermediate model that enriches order data by combining order and order_items. Includes derived metrics like total order amount."
+    columns:
+      - name: total_amount
+        description: "Total monetary value of the order, usually calculated as the sum of product_price for all items in the order."
+        tests:
+          - not_null
+          - accepted_range:
+              min_value: 0
