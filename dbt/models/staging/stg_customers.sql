@@ -1,2 +1,12 @@
-select customer_id, email, gender, city, country
-from {{source("raw_data", "customers")}}
+with source as (
+    select * from {{ source('raw_data', 'customers') }}
+)
+select
+    customer_id,
+    first_name,
+    last_name,
+    email,
+    country,
+    gender,
+    city
+from source
