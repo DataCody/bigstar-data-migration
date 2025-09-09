@@ -6,14 +6,14 @@
 [![Redshift](https://img.shields.io/badge/Warehouse-Redshift-8B0000?logo=amazon-redshift)](https://aws.amazon.com/redshift/)
 [![Postgres](https://img.shields.io/badge/Database-Postgres-4169E1?logo=postgresql)](https://www.postgresql.org/)
 [![Docker](https://img.shields.io/badge/Deployment-Docker-2496ED?logo=docker)](https://www.docker.com/)
-
+> 💡 **Automated ELT pipeline** for ingesting data with **Airbyte**, transforming it with **dbt**, and orchestrating analytics on **AWS Redshift**, powered by **Postgres** and containerized with **Docker**.
 
 This project builds a modern ELT pipeline to process raw e-commerce data into analytics-ready tables in Amazon Redshift. The pipeline powers dashboards for marketing, sales, and operations, enabling real-time decision-making.
-💡 **Automated ELT pipeline** for ingesting data with **Airbyte**, transforming it with **dbt**, and orchestrating analytics on **AWS Redshift**, powered by **Postgres** and containerized with **Docker**.
-> ✅ Designed as a **portfolio project for Data Engineer roles**, integrating batch processing, modeling, BI reporting, and AI-based interaction.
+
+
 
 ## 🚀Project Overview
-> 🚗 **Use case:** Help sales & operations teams explore EV product configurations, color options, and sales trends via a conversational interface.
+> 🚗 **Use case:** Help marketing & operations teams explore product sales, customer behaviors, and inventory trends through automated analytics.
 
 [Big Star Collectibles](https://bigstarcollectibles.com/) is an e-commerce platform specializing in unique merchandise such as stickers, stationery, apparel, and collectibles.  
 This project demonstrates the design and implementation of an **end-to-end ELT data pipeline** to support data-driven decision-making for Big Star’s operations.  
@@ -34,7 +34,7 @@ This project showcases modern data engineering best practices by combining **SQL
 
 ## 🏗️ Architecture
 
-This project implements a modern **ELT pipeline** for Big Star Collectibles. The architecture is designed to be **scalable, modular, and production-ready**, leveraging cloud infrastructure and orchestration tools.
+This project implements a modern **ELT pipeline** for Big Star Collectibles. The pipeline follows the Medallion Architecture pattern (Staging → Intermediate → Marts) to ensure modularity and scalability. The architecture is designed to be **scalable, modular, and production-ready**, leveraging cloud infrastructure and orchestration tools.
 
 ### Architecture Diagram
 
@@ -104,13 +104,13 @@ This project leverages a modern **Data Engineering toolkit** to ensure scalabili
   - SQL – transformations, modeling, and analytics
 
 - **Data Ingestion**
-  - Airbyte – ELT pipeline for extracting and loading data from PostgreSQL and external sources
+  - Airbyte –  Open-source and extensible, ideal for ELT ingestion. ELT pipeline for extracting and loading data from PostgreSQL and external sources
 
 - **Data Warehouse**
-  - Amazon Redshift – scalable, columnar cloud data warehouse
+  - Amazon Redshift – Cloud-native data warehouse optimized for analytics at scale.
 
 - **Transformation & Modeling**
-  - dbt (Data Build Tool) – modular transformations, testing, documentation, and lineage tracking
+  - dbt (Data Build Tool) – Industry-standard for SQL-based transformations and testing. Modular transformations, testing, documentation, and lineage tracking
 
 - **Containerization & Orchestration**
   - Docker – containerized environments for reproducibility
@@ -126,45 +126,50 @@ This project leverages a modern **Data Engineering toolkit** to ensure scalabili
 - **Monitoring & Data Quality**
   - dbt tests – built-in validation (`unique`, `not_null`, `relationships`, `accepted_values`)
   - Documentation & lineage – automatic docs generated in dbt
-Change Data Capture (CDC)
+## 📊 Example Output
 
-/docker-entrypoint-initdb.d # psql -U postgres -d big-star-db
-psql (15.3)
-Type "help" for help.
+This project delivers a fully functional **end-to-end data pipeline** that ingests, transforms, and models e-commerce data for analytics and decision-making.  
+Below are some example outputs from the system:
 
-big-star-db=# \dt
-            List of relations
- Schema |    Name     | Type  |  Owner   
---------+-------------+-------+----------
- public | customers   | table | postgres
- public | order_items | table | postgres
- public | orders      | table | postgres
- public | products    | table | postgres
-(4 rows)
+### 1. Data Ingestion with Airbyte
+- Automated extraction from **PostgreSQL** source
+- Incremental sync into **Amazon Redshift**
+- Configurable pipelines for scalability  
 
-big-star-db=# ALTER TABLE customers REPLICA IDENTITY DEFAULT;
-ALTER TABLE
-big-star-db=# ALTER TABLE order_items REPLICA IDENTITY DEFAULT;
-ALTER TABLE
-big-star-db=# ALTER TABLE orders REPLICA IDENTITY DEFAULT;
-ALTER TABLE
-big-star-db=# ALTER TABLE products REPLICA IDENTITY DEFAULT;
-ALTER TABLE
-big-star-db=# SELECT pg_create_logical_replication_slot('airbyte_slot', 'pgoutput');
- pg_create_logical_replication_slot 
-------------------------------------
- (airbyte_slot,0/254B6A8)
-(1 row)
+![Airbyte Pipeline Screenshot](readme_assets/images/airbyte_pipeline.png)
 
-big-star-db=# CREATE PUBLICATION airbyte_publication FOR TABLE customers, order_items, orders, products;
-CREATE PUBLICATION
-big-star-db=# 
+---
 
-Install Airbyte reference
+### 2. Data Warehouse – Amazon Redshift
+- Raw and transformed tables available in a scalable, columnar warehouse  
+- Schema structured into **`staging` → `intermediate` → `mart`** layers  
 
-https://docs.airbyte.com/platform/using-airbyte/getting-started/oss-quickstart
+![Redshift Tables Screenshot](readme_assets/images/redshift_tables.png)
 
-## 数据建模
+---
+
+### 3. Data Transformation with dbt
+- Modular SQL models for transformations
+- Automated **tests** (`unique`, `not_null`, `relationships`, `accepted_values`)
+- Full documentation generated  
+
+![dbt Models Screenshot](readme_assets/images/dbt_models.png)
+
+---
+
+### 4. Data Lineage & Governance
+- Clear lineage across **sources → staging → marts**
+- Provides full transparency and trust in the data pipeline  
+
+![dbt Lineage Screenshot](readme_assets/images/dbt_lineage.png)
+
+---
+
+### ✅ Final Outcome
+- Reliable **single source of truth** for analytics  
+- Scalable ELT architecture with **Postgres + Airbyte + Redshift + dbt**  
+- Ready for BI dashboards (Power BI / Tableau) for actionable insights
+- These curated data marts enabled customer churn analysis, CLV segmentation, and product-level profitability tracking.
 
 
 
